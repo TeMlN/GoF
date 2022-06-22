@@ -37,6 +37,32 @@ public class App {
         System.out.println(settings == settings1);
         System.out.println("============ reflection finish ============");
 
+
+        /**
+         * Serializable, Deserialization을 이용한 singleton pattern을 깨뜨리는 방법
+         */
+        System.out.println("============ serializable start ===========");
+        try (ObjectOutput objectOutput = new ObjectOutputStream(new FileOutputStream("settings.obj"))) {
+            objectOutput.writeObject(settings);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Settings settings3 = null;
+
+        try (ObjectInput objectInput = new ObjectInputStream(new FileInputStream("settings.obj"))) {
+            settings3 = (Settings) objectInput.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //actual : false
+        System.out.println(settings == settings3);
+        System.out.println("============ serializable finish ===========");
     }
 
 }
