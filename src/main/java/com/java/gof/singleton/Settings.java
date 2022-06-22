@@ -1,6 +1,8 @@
-package com.java.gof.single_ton;
+package com.java.gof.singleton;
 
-public class Settings {
+import java.io.Serializable;
+
+public class Settings implements Serializable {
 
 //    private static Settings instance;
 
