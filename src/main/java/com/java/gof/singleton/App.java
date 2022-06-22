@@ -17,6 +17,7 @@ public class App {
 
         Settings settings = Settings.getInstance();
         Settings settings1 = Settings.getInstance();
+        SettingsEnum enumSettings = SettingsEnum.INSTANCE;
 
         /**
          * Reflection을 이용해 싱글톤 패턴을 깨뜨리는 방법
@@ -63,6 +64,19 @@ public class App {
         //actual : false
         System.out.println(settings == settings3);
         System.out.println("============ serializable finish ===========");
+
+
+        System.out.println("============ enum으로 reflection을 이용한 singleton pattern 깨뜨리는걸 막는 방법 ===========");
+        SettingsEnum settings4 = null;
+        Constructor<?>[] declaredConstructors = SettingsEnum.class.getDeclaredConstructors();
+        for (Constructor<?> constructor : declaredConstructors) {
+            constructor.setAccessible(true);
+            settings4 = (SettingsEnum) constructor.newInstance("INSTANCE");
+        }
+
+        System.out.println(enumSettings == settings4);
+        System.out.println("============== finish ==============");
+
     }
 
 }
