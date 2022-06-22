@@ -39,3 +39,78 @@ public class App {
     }
 }
 ```
+
+### Multi Thread 환경에서의 Singleton Pattern
+
+하지만 이같은 방법에도 단점은 존재한다
+그 점은 바로 평소 우리가 개발한 Web Application은 멀티 쓰레드를 사용하기 때문에 이방법은 멀티 쓰레드 환경에서 Thread-safe 하지 않는다는 점이다.
+ 
+그렇다면 왜 Thread-safe 하지 않을까? 아까 사용했던 Settings Class를 가져와 설명해보겠다.
+
+```java
+public class Settings {
+
+    private static Settings instance;
+
+    private Settings() {}
+
+    public static Settings getInstance() {
+        //1번 Thread가 getInstance를 호출하여 검증문을 지나기도 전에
+        //2번 Thread가 getInstance를 호출한다면?
+        if (instance == null) {
+            instance = new Settings();
+        }
+        // 서로 다른 두개의 instance가 반환됨
+        return instance;
+    }
+}
+```
+
+그렇다면 멀티 쓰레드 환경에서도 Thread-safe하게 Singleton Pattern을 구현하는 방법은?
+* synchronized : getInstance에 synchronized 키워드를 붙히면 동기처리가 되기 때문에 쓰레드가 하나 들어와있을 떄 다른 쓰레드가 접근하지 못함 그래서 성능 저하가 있음. 
+* 이른 초기화(eager initialization) : instance 에 미리 생성을 하는 방법 `private static final Settings INSTANCE = new Settings();` 이런식으로 생성과 동시에 할당을 하고 getInstance 메서드에서 검증문 없이 그냥 `return instance;`해주는 방법.
+    * 하지만 이방법은 만약에 instance를 사용하지 않아서 생성이 필요없을때에도 상관없이 항상 Application 로딩 시점에 생성되기 때문에 메모리가 낭비된다는 단점이 있음.
+    
+* double checked lock : 이 방법은 synchronized 키워드를 이용한 방법과 유사하지만 좀 더 효율적이다 
+
+#### double checked lock
+```java
+public class Settings {
+
+    // 이전 방식과는 다르게 volatile 키워드를 붙여야 JDK 1.5버전 위에서 정상 동작합니다.
+    private static volatile Settings instance;
+
+    private Settings() {}
+
+    public static Settings getInstance() {
+        //synchronized 키워드와 달라진 점은 바로 모든 쓰레드가 동기화된 검증문을 거치지 않는다는 것이다.
+        if (instance == null) {
+            synchronized (Settings.class) {
+                if (instance == null) {
+                    instance = new Settings();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+* static inner : static inner 클래스를 사용하여 생성하는 방법이다.
+#### static inner
+```java
+public class Settings {
+    
+    private Settings() {}
+
+    private static class SettingsHolder {
+        private static final Settings INSTANCE = new Settings();
+    }
+
+    public static Settings getInstance() {
+        return SettingsHolder.INSTANCE;
+    }
+}
+
+```
+
