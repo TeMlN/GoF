@@ -77,6 +77,25 @@ public class App {
         System.out.println(enumSettings == settings4);
         System.out.println("============== finish ==============");
 
+
+        System.out.println("============== enum serializable 막는 방법 ========");
+
+        SettingsEnum settingsEnum = SettingsEnum.INSTANCE;
+        SettingsEnum serializableEnum = null;
+
+        try (ObjectOutput output = new ObjectOutputStream(new FileOutputStream("serializableEnum.obj"))) {
+            output.writeObject(settingsEnum);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (ObjectInput input = new ObjectInputStream(new FileInputStream("serializableEnum.obj"))) {
+            settingsEnum = (SettingsEnum) input.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }
