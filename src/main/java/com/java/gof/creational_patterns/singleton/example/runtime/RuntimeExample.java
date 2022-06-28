@@ -1,4 +1,4 @@
-package com.java.gof.creational_patterns.singleton.ex.runtime;
+package com.java.gof.creational_patterns.singleton.example.runtime;
 
 public class RuntimeExample {
     public static void main(String[] args) {
