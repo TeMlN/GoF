@@ -1,4 +1,4 @@
-package com.java.gof.singleton;
+package com.java.gof.creational_patterns.singleton;
 
 /**
  * enum의 단점은 클래스가 로딩될때 인스턴스들이 다 생성됨, 안쓰더라도

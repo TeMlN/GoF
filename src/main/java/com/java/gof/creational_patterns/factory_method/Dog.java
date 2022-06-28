@@ -1,4 +1,4 @@
-package com.java.gof.factory_method;
+package com.java.gof.creational_patterns.factory_method;
 
 public class Dog {
     String name;

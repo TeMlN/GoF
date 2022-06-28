@@ -1,4 +1,4 @@
-package com.java.gof.factory_method;
+package com.java.gof.creational_patterns.factory_method;
 
 public interface DogFactory {
     default Dog bringDog(String name, String gender) {
