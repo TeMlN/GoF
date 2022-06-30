@@ -1,5 +1,6 @@
 package com.java.gof.structural_patterns.adapter.security;
 
+//client
 public class LoginHandler {
     private final UserDetailsService userDetailsService;
 

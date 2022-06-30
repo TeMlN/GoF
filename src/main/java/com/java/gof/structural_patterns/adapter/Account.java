@@ -1,7 +1,9 @@
 package com.java.gof.structural_patterns.adapter;
 
+import com.java.gof.structural_patterns.adapter.security.UserDetails;
+
 //adaptee type
-public class Account {
+public class Account implements UserDetails {
 
     private String name;
 
@@ -15,6 +17,11 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getName();
     }
 
     public String getPassword() {

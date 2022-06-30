@@ -1,7 +1,10 @@
 package com.java.gof.structural_patterns.adapter;
 
+import com.java.gof.structural_patterns.adapter.security.UserDetails;
+import com.java.gof.structural_patterns.adapter.security.UserDetailsService;
+
 //adaptee type
-public class AccountService {
+public class AccountService implements UserDetailsService {
 
     public Account findAccountByUsername(String username) {
         Account account = new Account();
@@ -19,4 +22,8 @@ public class AccountService {
 
     }
 
+    @Override
+    public UserDetails loadUser(String username) {
+        return findAccountByUsername(username);
+    }
 }
